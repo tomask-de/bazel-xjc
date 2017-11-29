@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="Sample">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="Date" type="xs:date"/>
+      <xs:element name="Content">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title" type="xs:string"/>
+            <xs:element name="Note" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="color" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

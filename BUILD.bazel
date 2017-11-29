@@ -1,0 +1,32 @@
+genrule(
+    name = "sample-messages",
+    srcs = [
+        "src/main/xsd/sample.xsd",
+        "src/main/xjb/sample.xjb",
+        "src"
+    ],
+    outs = ["out_sample-messages"],
+    cmd = """
+        echo "INFO: Generating to $(location src)"
+        $(location @local_jdk//:xjc) -d $(location src) -b $(location src/main/xjb/sample.xjb) -verbose $(location src/main/xsd/sample.xsd) > $@
+    """,
+    local = 1,
+    tools = [
+        "@local_jdk//:jdk-default",
+        "@local_jdk//:xjc",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+java_library(
+    name = "sample-lib",
+    srcs = glob([
+        "src/**/*.java",
+    ]),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":sample-messages",
+    ],
+)
+
+
