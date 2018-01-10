@@ -3,30 +3,24 @@ genrule(
     srcs = [
         "src/main/xsd/sample.xsd",
         "src/main/xjb/sample.xjb",
-        "src"
     ],
-    outs = ["out_sample-messages"],
+    outs = ["sample-messages.srcjar"],
     cmd = """
-        echo "INFO: Generating to $(location src)"
-        $(location @local_jdk//:xjc) -d $(location src) -b $(location src/main/xjb/sample.xjb) -verbose $(location src/main/xsd/sample.xsd) > $@
+        echo "INFO: Generating to $(GENDIR)"
+        $(location @local_jdk//:xjc) -d $(GENDIR) -b $(location src/main/xjb/sample.xjb) -verbose $(location src/main/xsd/sample.xsd)
+        $(location @local_jdk//:jar) cvf $@ $(GENDIR)
     """,
     local = 1,
     tools = [
         "@local_jdk//:jdk-default",
         "@local_jdk//:xjc",
+        "@local_jdk//:jar",
     ],
     visibility = ["//:__pkg__"],
 )
 
 java_library(
     name = "sample-lib",
-    srcs = glob([
-        "src/**/*.java",
-    ]),
+    srcs = [":sample-messages"],
     visibility = ["//visibility:public"],
-    deps = [
-        ":sample-messages",
-    ],
 )
-
-
